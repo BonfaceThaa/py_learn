@@ -4,6 +4,7 @@ CPU bound tasks crunch numbers and use a lot of CPU
 IO bound tasks wait for input and output operations to be completed (i.e downloading, network ops, read and write jobs)
 """
 
+import threading
 import time
 
 start = time.perf_counter()
@@ -15,7 +16,15 @@ def do_something():
     print('Done sleeping...')
 
 
-do_something()
+threads = []
+
+for _ in range(10):
+    t = threading.Thread(target=do_something)
+    t.start()
+    threads.append(t)
+
+for thread in threads:
+    thread.join()
 
 finish = time.perf_counter()
 
